@@ -47,13 +47,13 @@ jobs:
       - name: Build Android APK
         run: |
           cd android_project
-          cordova build android --release
+          cordova build android
 
       - name: Upload and Print Download Link
         run: |
           echo "======================================================="
           echo "DOWNLOAD YOUR APK FROM THE LINK BELOW:"
-          curl --upload-file android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://transfer.sh
+          curl --upload-file android_project/platforms/android/app/build/outputs/apk/debug/app-debug.apk https://transfer.sh
           echo ""
           echo "======================================================="
 
@@ -61,5 +61,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: my-gdevelop-game-apk
-          path: android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+          path: android_project/platforms/android/app/build/outputs/apk/debug/app-debug.apk
           
