@@ -48,7 +48,7 @@ jobs:
         run: |
           cd android_project
           cordova build android --release
-          - name:      Upload and Print Download Link
+          - name:Upload and Print Download Link
           run: |
           echo "======================================================="
           echo "DOWNLOAD YOUR APK FROM THE LINK BELOW:"
