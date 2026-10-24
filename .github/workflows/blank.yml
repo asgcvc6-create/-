@@ -1,39 +1,57 @@
-# This is a basic workflow to help you get started with Actions
+name: Build GDevelop Game APK
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      - name: Install Dependencies
-        run: npm install
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Build APK
-        run: cd android && ./gradlew assembleRelease
+      - name: Install Zip Utility
+        run: sudo apt-get update && sudo apt-get install -y zip unzip
 
-      - name: Upload APK
+      - name: Merge and Extract GDevelop Files
+        run: |
+          mkdir game_files
+          cat GDevelop_part1.zip GDevelop_part2.zip > combined.zip
+          unzip -o combined.zip -d game_files/ || unzip -o GDevelop_part1.zip -d game_files/
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Cordova for APK Building
+        run: npm install -g cordova
+
+      - name: Create Android Project
+        run: |
+          cordova create android_project com.mygame.gdevelop GDevelopGame
+          cd android_project
+          cordova platform add android
+          rm -rf www/*
+          cp -r ../game_files/* www/
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Android APK
+        run: |
+          cd android_project
+          cordova build android --release
+
+      - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
-          name: game-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: my-gdevelop-game-apk
+          path: android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
           
-      
