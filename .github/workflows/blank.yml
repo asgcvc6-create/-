@@ -52,8 +52,11 @@ jobs:
         run: |
           echo "======================================================="
           echo "DOWNLOAD YOUR APK FROM THE LINK BELOW:"
-          curl -T android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://bashupload.com
+          curl -upload-file android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://transfer.sh
+          echo ""
           echo "======================================================="
+          
+          
           
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
