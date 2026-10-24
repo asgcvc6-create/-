@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "======================================================="
           echo "DOWNLOAD YOUR APK FROM THE LINK BELOW:"
-          curl -upload-file android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://transfer.sh
+          curl --upload-file android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://transfer.sh
           echo ""
           echo "======================================================="
           
