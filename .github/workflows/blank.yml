@@ -48,12 +48,14 @@ jobs:
         run: |
           cd android_project
           cordova build android --release
-            - name: Upload and Print Download Link
+                  - name: Upload and Print Download Link
           run: |
           echo "======================================================="
           echo "DOWNLOAD YOUR APK FROM THE LINK BELOW:"
           curl --upload-file android_project/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk https://transfer.sh
           echo ""
+          echo "======================================================="
+          
           echo "======================================================="
           
           
